@@ -1,0 +1,39 @@
+CC = g++
+CFALGS = -Wall
+
+OBJ1 = lomoto.o 
+OBJ2 = hoare.o
+OBJ3 = median.o
+OBJ4 = 2pivot.o
+OBJ5 = random.o
+
+all: lomoto hoare median 2pivot random
+
+lomoto: $(OBJ1)
+	$(CC) $(CFLAGS) -o lomoto $(OBJ1)
+
+hoare: $(OBJ2)
+	$(CC) $(CFLAGS) -o hoare $(OBJ2)
+
+median: $(OBJ3)
+	$(CC) $(CFLAGS) -o median $(OBJ2)
+
+2pivot: $(OBJ4)
+	$(CC) $(CFLAGS) -o 2pivot $(OBJ2)
+
+random: $(OBJ5)
+	$(CC) $(CFLAGS) -o random $(OBJ2)
+	
+
+lomoto.o: lomoto.c
+
+hoare.o: hoare.c
+
+median.o: median.c
+
+2pivot.o: 2pivot.c
+
+random.o: random.c
+
+clean:
+	rm -f lomoto hoare median 2pivot random *.o
