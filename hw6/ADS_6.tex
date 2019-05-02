@@ -1,0 +1,142 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend] {algpseudocode}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\lhead{Algorithms and Data Structure 6}
+\rhead{Drishti Maharjan}
+
+
+\begin{document}
+\title{Algorithms and Data Structures }
+\author{Drishti Maharjan}
+\maketitle
+
+\section*{\center Assignment 6}
+\newpage
+\subsection*{Problem 6.1 \newline}
+\subsubsection*{\textnormal{a) Code in countsort.c \newline \newline
+b) Code in bucketsort.c \newline \newline
+c) Using countsort for this question. Using parts of 6.1 a to implement it, so please find the references in the comments. The initial call to this algorithm is same as 6.1 a i.e. Countsort(array, sizeArray)\newline
+\begin{algorithm}
+\caption{Counting ints in range [a,b] in CountSort}\label{euclid}
+\begin{algorithmic}[1]
+\State $ \textbf{Countsort(array,n) }$
+\newline //Function Countsort takes parameters \textit{array} and \textit{ n} = size of array
+\State ..insert lines 21-34 of 6.1 a..
+\State $ result \gets \textbf{RangeCount(C,a,b)} $ 
+\newline // End of Countsort function \newline
+//\textit{result} holds the number of ints in range [a,b] \newline
+\end{algorithmic} 
+\begin{algorithmic}[1]
+\State \textbf{RangeCount(C,a,b)}
+\newline // RangeCount takes array C from CountSort, a and b (lower and upper bounds) of the range required
+\State $ Count \gets 0 $
+\For {$ i$ = $a$ to $b$}
+\State $ Count \gets Count + C[i]  $
+\EndFor
+\State \Return $ Count $ 
+\end{algorithmic}
+\end{algorithm}
+\newline \newline  
+d) Code in wordsort.cpp (c++ so that easy to use string arrays) \newline
+\newline 
+e) \textbf{Worst case for Bucket Sort}\newline
+For a uniformly distributed array, let's assume that the difference between the minimum element and maximum element of an array is very small. This would mean the range of the array would be very small. According to my Bucket sort implementation, all the elements will go in a single bucket and, insertion sort will be performed in the entire array. If the array is reverse sorted(the worst case of insertion sort), this would make the time complexity of insertion sort $\theta(n^2)$ . The other operations of the bucket sort algorithm has time complexity $\theta(n)$. Hence, the total time complexity will be $\theta(n^2 + n) = \theta(n^2)$\newpage
+An example of an array for worst case could be something like [0.99,0.98,0.97,0.96]. For my code, I tried computing time for the aforementioned array(\textit{case 1}) and another array [0.96,0.17,0.98,0.69] (\textit{case 2}) of the same length. The time computation for case 1 was 0.000051 and for case 2 was 0.000038. Even for smaller array size, we can see the time difference clearly, so the time complexity of worst case for bucket sort is $\theta(n^2).$ \newline \newline
+f) Let's say we have a list A with 2D points represented as: \newline
+\newline     $ A = [(x1,y1)..(xn,yn)] $. \newline \newline
+And, we have a 1-D array: \newline
+ $ A[i].d = {d1..dn} $ where di = Euclidean distance of point (xi,yi) from origin of unit circle, and so on. \newline 
+\newline As the 2d points are uniformly distributed and we take Euclidian distance of unit circle, the distance range will be between 0 and 1. Due to these reasons, bucketsort seems to be the most suitable algorithm for this problem. But, bucket sort algorithm is slighlty modified to map the indexes of distance with its respective points. \newline \newline
+I have 2 functions for this problem: Distance and BucketSort. Distance computes distance of respective points. BucketSort applies regular bucket sort over the distance array, and in order to be time efficient(rather than space efficient), n * distance of respective point is used as the index to store points, so buckets are divided according to order of distance. This mapping is later used to sort the points as we have sorted buckets. \newline
+\newline
+\textbf{Pseudocode for bucketsort according to Euclidian distance: } \newpage
+\begin{algorithm}
+\caption{Pseudocode} \label{euclid}
+\begin{algorithmic} [1]
+\State \textbf {Distance(A,i)} // Distance takes struct A, and index of points i
+\State $ d \gets \sqrt{(A[i].x) ^ 2 + (A[i].y) ^2} $
+\State \Return $ d $ //Returns distance of the given point
+\newline
+\State \textbf{BucketSort(A,n)} //BucketSort takes struct A, and n(no of points)
+\State Bucket[n] $ \gets [0] $ //initialization
+\For {i = 1 to n}
+\State A[i].d $ \gets $ \textbf{Distance(A,i)} //filling distance array
+\State $ dig \gets $ n $ * A[i].d $ //index of bucket
+\State Bucket[dig] $ \gets $ A[i] //A[i] is filled in buckets in order of distance
+\EndFor
+\State \textbf{end for}
+\For {i = 1 to n}
+\State Sort Bucket[i] using any fast algorithm (in 6.1 b, insertion sort)
+\EndFor
+\State \textbf{end for}
+\State index $\gets$ 1
+\For {i = 1 to n} //Concatenating buckets
+\While {Bucket[i] is not null}
+\State A[index] $\gets$ element of Bucket[i]
+\State A[index] $\gets$ A[index] + 1
+\EndWhile 
+\State \textbf{end while}
+\EndFor
+\State \textbf{end for}
+\State \Return A //return sorted points (struct A)
+\end{algorithmic}
+\end{algorithm} }}
+\subsection*{\newline \newline  Problem 6.2 \newline}
+\subsubsection*{\textnormal {a) Code in Hollerith.cpp \newline \newline
+b) \textbf{Hollerith's Radix Sort}
+\newline This algorithm uses bucket sort and starts from the most significant bit.
+\newpage
+\textbf{Time Complexity} \newline \newline
+\textit{Best Case:} \newline
+If the difference between the numbers in the array is significant, the implementation of bucket sort in the algorithm places the elements into different buckets. There is no need of traversing through every digit for these numbers as every bucket has one element. This means every bucket is sorted in its own as it has only one element, making it the best case. Then, the buckets are concatenated to give a list. So, the time complexity remains the same as of bucket sort: $\theta(n)$ \newline \newline
+\textit{Worst Case:} \newline
+The difference between the elements is very less, or all the elements in the array are the same is the worst case. This would mean all the elements fall in the same bucket everytime bucket sort is performed. If we have \textit{d} digits, then for every digit, bucket sort will be performed once. Therefore, running time for the worst case would be $\theta(dn)$ where $ d = log_bk$ where b = base and k = no of digits in the maximum element of the array. \newline
+\newline
+\textit{Average Case:} \newline
+For average case, let's assume half of the buckets are empty or has single element(close to best case), and the other half buckets have more than 1 element (between best and worst case). As mentioned in best case, time complexity for n/2 buckets of size 1 or 0 is $\theta(n/2)$. For the other half, bucket sort is performed 'd' times for n/2 buckets, so time complexity is $\theta(dn/2)$. Therefore, running time of average case is $\theta (n/2 + dn/2) = \theta (dn) $ where d = no of digits
+\newline \newline\newline
+\textbf{Space Complexity} \newline \newline
+\textit{Best Case:} \newline
+A single element is placed in a bucket, and no further buckets are required. The storage required is only for n buckets of size 1 each. Hence, the space complexity is $\theta(n)$. \newline \newline
+\textit{Worst Case and Average Case:} \newline
+\textit{n} buckets will be initialized at first. Bucket sort will be performed for maximum \textit{d} passes, where \textit {d} = number of digits of max element in the array. This means, at most, $dn$ buckets can be created. Therefore, space complexity for worst case is $\theta(dn)$. 
+\newpage
+c) Given the big range of array \textit{$n^3-1$}, radix sort traversing from least significant digit to most significant digit would be the most efficient algorithm as its time complexity is $\theta(dn)$ where $d$ is linear. Count Sort works for integers with smaller range, and bucket sort works only for uniformly distrivuted arrays. So, radix sort with a subroutine of count sort for each pass is a better choice. In this case, $ d = log _b(n^3-1) $ if we have range of $(n^3-1)$ values with max value having $d$ digits. \newline \newline
+\textbf{Pseudocode for radix sort} \newline
+\begin{algorithm} 
+\caption{Radix Sort} \label{euclid}
+\begin {algorithmic} [1]
+\State Radix-Sort(A, d) //A = array of no to sort \newline
+{\footnotesize \textit {//Each key in A[1..n] is a d-digit integer. Digits are numbered from 1 to d from least to most significant digit}}
+\For {j = 1 to d}
+\newline {\footnotesize \textit{ //CountSort on digit j of all elements} }
+\State $ count[10] \gets [0] $ {\footnotesize \textit{//initialize count array as 0}}
+\For {i = 1 to n}
+\State count[keyof(A[i]) in pass j] $ \gets $ count[keyof(A[i]) in pass j] + 1  
+\EndFor
+\State \textbf{end for}
+\For {k = 1 to 10}
+\State $ count[k] \gets count[k] + count[k-1] $
+\EndFor
+\State \textbf{end for}
+\newline {\footnotesize \textit{//Build resulting array by checking correct position of A[i] with the help of count[k] }}
+\For {i = n \textbf{downto} 1} 
+\State $ result[count[keyof(A[i])]] \gets A[j] $
+\State  count[keyof(A[i])] $ \gets $ count[keyof(A[i])] - 1
+\EndFor
+\State \textbf{end for}
+\newline {\footnotesize \textit{//According to current digit j, array A now contains the sorted numbers}} \newline
+\For {i = 1 to n}
+\State $ A[i] \gets Result[i] $
+\EndFor
+\State \textbf{end for}
+\EndFor
+\State \textbf{end for}
+\end{algorithmic}
+\end{algorithm} }}
+\end{document}
+

@@ -1,0 +1,36 @@
+CC = g++
+CFALGS = -Wall
+
+OBJ1 = bucketsort.o 
+OBJ2 = countsort.o
+OBJ3 = Hollerith.o
+OBJ4 = wordsort.o
+
+
+all: bucketsort countsort Hollerith wordsort
+
+bucketsort: $(OBJ1)
+	$(CC) $(CFLAGS) -o bucketsort $(OBJ1)
+
+countsort: $(OBJ2)
+	$(CC) $(CFLAGS) -o countsort $(OBJ2)
+
+Hollerith: $(OBJ3)
+	$(CC) $(CFLAGS) -o Hollerith $(OBJ2)
+
+wordsort: $(OBJ4)
+	$(CC) $(CFLAGS) -o wordsort $(OBJ2)
+
+
+	
+bucketsort.o: bucketsort.c
+
+countsort.o: countsort.c
+
+Hollerith.o: Hollerith.cpp
+
+wordsort.o: wordsort.cpp
+
+
+clean:
+	rm -f bucketsort countsort Hollerith wordsort *.o
