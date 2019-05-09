@@ -1,0 +1,15 @@
+CC = g++
+CFALGS = -Wall
+
+OBJ1 = testRBT.o
+
+all: testRBT
+
+testRBT: $(OBJ1)
+	$(CC) $(CFLAGS) -o testRBT $(OBJ1)
+
+testRBT.o: redblacktree.h testRBT.cpp
+
+
+clean:
+	rm -f testRBT *.o
