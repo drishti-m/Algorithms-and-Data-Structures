@@ -1,0 +1,14 @@
+CC = g++
+CFLAGS = -Wall
+
+OBJ1 = Rabin.o
+
+all: Rabin
+
+Rabin: Rabin.o
+	g++ -Wall -o Rabin Rabin.o
+
+Rabin.o: Rabin.c 
+
+clean:
+		rm -f Rabin *.o
